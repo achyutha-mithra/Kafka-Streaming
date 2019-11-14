@@ -1,0 +1,11 @@
+
+object KafkaMain {
+  
+  def main(args: Array[String]){
+    
+    val producer = new Producer("test1","localhost:9092","/home/hmecd000149/data.txt")
+    val consumer = new Consumer("test1","localhost:9092","consumer-group")
+  
+  }
+
+}
