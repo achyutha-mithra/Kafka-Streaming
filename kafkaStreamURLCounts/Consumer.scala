@@ -23,7 +23,10 @@ class Consumer(topics: String, bootstrap_server: String, group_name: String) {
   // To deal with multiple topics
   val topicsSet = topics.split(",")
 
-  // Start consuming from the beginning - Earliest (OR) Start consuming from the last commit - Latest
+  // Earliest - Consumes buffered messages also which weren't consumed/committed before. This lets the consumer to catch up to the
+             // messages during Streaming.  
+  // Latest - Ignores buffered messages and only consumes the subsequent messages
+  
   val kafkaParams = Map[String, Object](
     ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -> bootstrap_server,
     ConsumerConfig.GROUP_ID_CONFIG -> group_name,
