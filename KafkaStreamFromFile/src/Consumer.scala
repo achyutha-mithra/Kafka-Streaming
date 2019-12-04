@@ -11,7 +11,7 @@ class Consumer(topics: String, bootstrap_server: String, group_name: String) {
     Logger.getLogger("org").setLevel(Level.ERROR)
 
     val sparkConf = new SparkConf().setAppName("DirectKafkaWordCount")
-    .setMaster("local[*]")
+    .setMaster("local[*]")  // All available cores
     .set("spark.executor.memory","1g")
     
     val ssc = new StreamingContext(sparkConf, Seconds(1))
@@ -28,7 +28,7 @@ class Consumer(topics: String, bootstrap_server: String, group_name: String) {
       
     val messages = KafkaUtils.createDirectStream[String, String](
       ssc,
-      LocationStrategies.PreferConsistent,
+      LocationStrategies.PreferConsistent, // it consistently distributes partitions across all executors
       ConsumerStrategies.Subscribe[String, String](topicsSet, kafkaParams))
 
     val lines = messages.map(_.value)
