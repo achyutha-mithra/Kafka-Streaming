@@ -29,6 +29,10 @@ object Producer {
       case fetchURL(param) =>
         val record = new ProducerRecord[String, String]("topic1", param)
         producer.send(record)
+      
+      /*
+      Messages are stored in the topic in a round robin fashion accross partitions. 
+      */
 
     }
   }
