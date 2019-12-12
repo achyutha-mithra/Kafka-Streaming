@@ -45,7 +45,7 @@ class Consumer(topics: String, bootstrap_server: String, group_name: String) {
 
   val messages = KafkaUtils.createDirectStream[String, String](
     ssc,
-    LocationStrategies.PreferConsistent,
+    LocationStrategies.PreferConsistent, // Distribute partitions across available partitions.
     ConsumerStrategies.Subscribe[String, String](topicsSet, kafkaParams))
 
   // Counts per Path
