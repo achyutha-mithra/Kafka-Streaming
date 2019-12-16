@@ -46,29 +46,48 @@ object Producer {
 
     val actor = system.actorOf(Props[ActorKafkaProd], "AkkaActor")
 
-    val paths = Array("path1", "path2", "path3")
     val hours = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
     /*
-      Randomly generated paths and their hours from the array paths and hours
+      Randomly generated  hours from the array hours
       are sent to an actor to be processed further.
      */
 
     val route =
-      path("hi") {
-        val random_value = new Random(System.currentTimeMillis())
+      concat(
+      
+        path("path1") {
 
-        val random_index = random_value.nextInt(paths.length)
-        val final_path = paths(random_index)
+        val rand = new Random(System.currentTimeMillis())
+        val random_index2 = rand.nextInt(hr.length)
+        val hour = hr(random_index2)
+        val finalresult = "path1-"+hour
 
-        val random_index2 = random_value.nextInt(hours.length)
-        val final_hour = hours(random_index2)
-
-        val finalresult = final_path + "-" + final_hour
-        actor ! fetchURL(finalresult)
-
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Hello, A path and its corresponding hour are sent to kafka!</h1> <"))
+        actor1 ! fetchURL(finalresult)
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Path1: Hello</h1> <"))
       }
+        ,
+        path("path2") {
+
+          val rand = new Random(System.currentTimeMillis())
+          val random_index2 = rand.nextInt(hr.length)
+          val hour = hr(random_index2)
+          val finalresult = "path2-"+hour
+
+          actor1 ! fetchURL(finalresult)
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Path2: Hello</h1> <"))
+        },
+        path("path3") {
+
+          val rand = new Random(System.currentTimeMillis())
+          val random_index2 = rand.nextInt(hr.length)
+          val hour = hr(random_index2)
+          val finalresult = "path3-"+hour
+
+          actor1 ! fetchURL(finalresult)
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Path3: Hello</h1> <"))
+        }
+      )
 
 
     val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
